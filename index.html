@@ -8,15 +8,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --color-primary: #2563eb;
-            --color-primary-dark: #1d4ed8;
-            --color-primary-light: #3b82f6;
+            /* Palet Warna Baru */
+            --color-primary: #5A67D8; /* Biru Tua Lavender */
+            --color-primary-dark: #434190;
+            --color-primary-light: #7F9CF5;
             --color-secondary: #ffffff;
-            --color-accent: #10b981;
-            --color-text: #1f2937;
-            --color-text-light: #6b7280;
-            --color-background: #f9fafb;
-            --color-border: #e5e7eb;
+            --color-accent: #38A169; /* Hijau Mint */
+            --color-text: #2D3748; /* Abu-abu Gelap */
+            --color-text-light: #A0AEC0; /* Abu-abu Pastel */
+            --color-background: #F7FAFC; /* Latar Belakang Sangat Terang */
+            --color-border: #E2E8F0;
             --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --border-radius: 12px;
         }
@@ -25,7 +26,7 @@
 
         body {
             font-family: var(--font-family);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #E0E7FF 0%, #C3DAFE 100%); /* Gradien Latar Belakang Lembut */
             color: var(--color-text);
             line-height: 1.6;
             min-height: 100vh;
@@ -44,14 +45,14 @@
             flex-direction: column;
             background: var(--color-background);
             border-radius: var(--border-radius);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
-            animation: fadeInUp 0.6s ease-out;
+            animation: fadeInScale 0.6s ease-out;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .chat-header {
@@ -66,11 +67,14 @@
         .chat-header img {
             width: 40px;
             height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--color-accent);
         }
 
         .chat-header h1 {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-text);
         }
 
         .chat-history {
@@ -79,24 +83,29 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .chat-message {
             display: flex;
             gap: 0.75rem;
             max-width: 80%;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            animation: slideInFromLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .chat-message.user {
             align-self: flex-end;
             flex-direction: row-reverse;
+            animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        @keyframes slideInFromLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInFromRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .avatar {
@@ -109,239 +118,4 @@
             color: white;
             font-size: 1.2rem;
             flex-shrink: 0;
-        }
-
-        .avatar.user-avatar { background-color: var(--color-primary); }
-        .avatar.ai-avatar { background-color: var(--color-accent); }
-        
-        .message-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: var(--border-radius);
-        }
-
-        .chat-message.user .message-bubble {
-            background-color: var(--color-primary);
-            color: white;
-            border-top-right-radius: 4px;
-        }
-
-        .chat-message.ai .message-bubble {
-            background-color: #e5e7eb;
-            color: var(--color-text);
-            border-top-left-radius: 4px;
-        }
-        
-        .message-bubble.loading-bubble {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dot-flashing {
-            position: relative;
-            width: 6px; height: 6px;
-            border-radius: 5px;
-            background-color: var(--color-text-light);
-            color: var(--color-text-light);
-            animation: dotFlashing 1s infinite linear alternate;
-            animation-delay: .5s;
-        }
-        .dot-flashing::before, .dot-flashing::after {
-            content: '';
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            width: 6px; height: 6px;
-            border-radius: 5px;
-            background-color: var(--color-text-light);
-            color: var(--color-text-light);
-        }
-        .dot-flashing::before {
-            left: -10px;
-            animation: dotFlashing 1s infinite alternate;
-            animation-delay: 0s;
-        }
-        .dot-flashing::after {
-            left: 10px;
-            animation: dotFlashing 1s infinite alternate;
-            animation-delay: 1s;
-        }
-        @keyframes dotFlashing {
-            0% { background-color: var(--color-text-light); }
-            50%, 100% { background-color: #d1d5db; }
-        }
-
-        .chat-input-area {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid var(--color-border);
-            background: var(--color-secondary);
-        }
-
-        #query-form {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        #query-input {
-            flex-grow: 1;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--color-border);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: var(--font-family);
-            transition: all 0.2s ease;
-        }
-        #query-input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        #submit-btn {
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            width: 44px;
-            height: 44px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-        #submit-btn:hover:not(:disabled) {
-            background: var(--color-primary-dark);
-        }
-        #submit-btn:disabled {
-            background: var(--color-text-light);
-            cursor: not-allowed;
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <header class="chat-header">
-            <img src="images/logo.jpg" alt="Chatbot Logo">
-            <h1>AI Assistant</h1>
-        </header>
-        <div class="chat-history" id="chat-history">
-            <div class="chat-message ai">
-                <div class="avatar ai-avatar"><i class="fas fa-robot"></i></div>
-                <div class="message-bubble">Halo! Ada yang bisa saya bantu terkait data penjualan?</div>
-            </div>
-        </div>
-        <div class="chat-input-area">
-            <form id="query-form">
-                <input type="text" id="query-input" placeholder="Ketik pertanyaan Anda di sini..." required autocomplete="off">
-                <button type="submit" id="submit-btn"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const form = document.getElementById('query-form');
-        const queryInput = document.getElementById('query-input');
-        const submitBtn = document.getElementById('submit-btn');
-        const chatHistory = document.getElementById('chat-history');
-
-        // GANTI DENGAN URL PRODUCTION WEBHOOK N8N ANDA (yang baru)
-        const N8N_WEBHOOK_URL = 'https://agent.altius-erp.com/webhook/text-to-sql-altius-chat'; 
-
-        // BARU: Variabel untuk menyimpan riwayat percakapan
-        let conversationHistory = [
-            // Kita bisa menambahkan pesan sistem awal jika diperlukan, atau membiarkannya kosong.
-            // Contoh: { role: 'system', content: 'User is interacting with a sales database.' }
-        ];
-
-        window.addEventListener('load', () => queryInput.focus());
-
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const query = queryInput.value.trim();
-            if (!query) return;
-
-            // Tambahkan pesan pengguna ke UI dan riwayat
-            displayMessage('user', query);
-            conversationHistory.push({ role: 'user', content: query });
-            
-            // Tampilkan gelembung loading
-            displayLoading();
-
-            submitBtn.disabled = true;
-            queryInput.value = '';
-
-            try {
-                // Kirim request ke N8N Webhook dengan menyertakan riwayat
-                const response = await fetch(N8N_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        query: query, 
-                        history: conversationHistory // Kirim riwayat
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const answer = data.answer || 'Maaf, saya tidak bisa memproses permintaan Anda saat ini.';
-                
-                // Hapus gelembung loading dan tampilkan jawaban AI
-                removeLoading();
-                displayMessage('ai', answer);
-                
-                // Tambahkan jawaban AI ke riwayat
-                conversationHistory.push({ role: 'assistant', content: answer });
-
-            } catch (error) {
-                console.error('Error:', error);
-                removeLoading();
-                displayMessage('ai', 'Maaf, terjadi kesalahan saat menghubungi server. Silakan coba lagi.');
-            } finally {
-                submitBtn.disabled = false;
-                queryInput.focus();
-            }
-        });
-
-        function displayMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${sender}`;
-
-            const avatarClass = sender === 'user' ? 'user-avatar' : 'ai-avatar';
-            const avatarIcon = sender === 'user' ? 'fa-user' : 'fa-robot';
-            
-            messageDiv.innerHTML = `
-                <div class="avatar ${avatarClass}"><i class="fas ${avatarIcon}"></i></div>
-                <div class="message-bubble">${text.replace(/\n/g, '<br>')}</div>
-            `;
-            chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll
-        }
-        
-        function displayLoading() {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'chat-message ai';
-            loadingDiv.id = 'loading-indicator';
-            loadingDiv.innerHTML = `
-                <div class="avatar ai-avatar"><i class="fas fa-robot"></i></div>
-                <div class="message-bubble loading-bubble">
-                    <div class="dot-flashing"></div>
-                </div>
-            `;
-            chatHistory.appendChild(loadingDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function removeLoading() {
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.remove();
-            }
-        }
-
-    </script>
-</body>
-</html>
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
